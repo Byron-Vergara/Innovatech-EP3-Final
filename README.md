@@ -17,6 +17,13 @@ La arquitectura subyacente ha sido diseñada para Alta Disponibilidad (HA):
 *   **Amazon ECR (Elastic Container Registry):** Bóvedas privadas donde se alojan las imágenes de los microservicios compilados, protegiendo la propiedad intelectual del código.
 *   **VPC & Security Groups:** Red aislada en las zonas `us-east-1a` y `us-east-1b`, asegurando que solo el tráfico de internet HTTP ingrese por el balanceador, y bloqueando el acceso público a las APIs y Base de Datos.
 
+## Dockerización y Contenedores
+
+El proyecto incluye la contenedorización completa desde cero de los microservicios:
+*   Se crearon los respectivos `Dockerfile` implementando el patrón **Multi-stage build**, lo que permite compilar el código fuente en un contenedor temporal y trasladar únicamente los binarios limpios al contenedor de producción (reduciendo drásticamente el tamaño y mejorando la seguridad).
+*   **Backends (Ventas y Despachos):** Se utilizó `eclipse-temurin:17-jdk-alpine` como imagen base para producción, asegurando compatibilidad moderna con Java 17 y resolviendo los fallos globales de obsolescencia de las imágenes estándar de `openjdk`.
+*   **Frontend Dashboard:** Se utilizó un entorno Node para la fase de construcción (build) y `nginx:alpine` para servir la aplicación en producción de manera ultra ligera.
+
 ## Integración y Entrega Continua (CI/CD)
 
 El ciclo de desarrollo está 100% automatizado mediante flujos de trabajo en **GitHub Actions**. Ante cualquier actualización en el código base, el pipeline ejecuta:
