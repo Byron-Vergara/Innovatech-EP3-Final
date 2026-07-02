@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-despachos
+  labels:
+    app: backend-despachos
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-despachos
+  template:
+    metadata:
+      labels:
+        app: backend-despachos
+    spec:
+      containers:
+      - name: backend
+        image: 832247032595.dkr.ecr.us-east-1.amazonaws.com/backend:despachos
+        env:
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:mysql://db-service:3306/innovatech?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true"
+        - name: SPRING_DATASOURCE_USERNAME
+          value: "root"
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: "root"
+        ports:
+        - containerPort: 3001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-despachos-service
+spec:
+  selector:
+    app: backend-despachos
+  ports:
+    - protocol: TCP
+      port: 3001
+      targetPort: 3001
