@@ -1,6 +1,7 @@
 name: Deploy Backend Ventas to EKS
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'Springboot-API-REST-VENTAS/**'
