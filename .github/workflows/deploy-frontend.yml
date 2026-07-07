@@ -1,6 +1,7 @@
 name: Deploy Frontend to EKS
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'front_despacho/**'
